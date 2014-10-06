@@ -2,7 +2,9 @@
   %head
     %title Video converter
     %script{ src: "/application.js" }
+    %script{ src: "//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" }
     %link{ rel: "stylesheet", type: "text/css", href:"/application.css" }
   %body
     %h1 Video converter
+    = styled_flash
     = yield

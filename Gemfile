@@ -10,3 +10,9 @@ gem 'haml'
 gem 'data_mapper'
 #Use MySQL as database
 gem 'dm-mysql-adapter'
+
+#Use this gem to provide flash messages to the user
+gem 'sinatra-flash'
+
+#Use ffprobe to get info from videofile
+gem 'ffprober'

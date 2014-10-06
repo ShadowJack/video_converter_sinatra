@@ -2,6 +2,7 @@ require 'sinatra'
 require './helpers.rb'
 require './Models/video.rb'
 
+enable :sessions
 
 get '/videos' do
   @videos = Video.all
@@ -13,10 +14,14 @@ get '/videos/new' do
 end
 
 post '/videos' do
-  if Video.load( params )
+  if !params['title'] || !params['file'][:tempfile]
+    flash.next[:error] = 'Both title and file fields are required!'
+    redirect to '/videos/new'
+  elsif Video.upload(params)
     redirect to('/videos')
   else
     haml :upload_error
+  end
 end
 
 get '/videos/:id/flv' do
@@ -32,4 +37,12 @@ get '/videos/:id/meta' do
 end
 
 delete '/videos/:id' do
+  @video = Video.get(params[:id])
+  logger.info "Video: " + @video.inspect
+  if @video && @video.destroy
+    flash.next[:notice] = 'Your video was successfully deleted!'
+  else
+    flash.next[:error] = 'Can\'t find this video in the db!'
+  end
+  redirect to '/videos'
 end
