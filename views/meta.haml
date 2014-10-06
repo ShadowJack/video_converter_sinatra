@@ -1,0 +1,16 @@
+%h2 Meta data
+%p
+  Title: 
+  = @video.title
+%p
+  Video bitrate:
+  = @video.video_bitrate
+%p
+  Audio bitrate:
+  = @video.audio_bitrate
+%p
+  Dimensions
+  = @video.dimensions
+%p
+  %a{ href: url('/videos') } Go to index
+        

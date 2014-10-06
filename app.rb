@@ -33,11 +33,17 @@ get '/videos/:id/mp4/?' do
 end
 
 get '/videos/:id/meta/?' do
-  haml :index
+  @video = Video.get params[:id]
+  if @video
+    haml :meta
+  else
+    flash.next[:error] = 'Error while getting metadata, sorry.'
+    redirect to '/videos'
+  end
 end
 
-delete '/videos/:id' do
-  @video = Video.get(params[:id])
+delete '/videos/:id/?' do
+  @video = Video.get params[:id]
   logger.info 'Video: ' + @video.inspect
   if @video && @video.remove_from_disk && @video.destroy
     flash.next[:notice] = 'Your video was successfully deleted!'

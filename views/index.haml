@@ -5,9 +5,7 @@
     %td Title
     %td flv
     %td mp4
-    %td dimensions
-    %td video bitrate
-    %td audio bitrate
+    %td meta
     %td status
     %td
   %tbody
@@ -17,9 +15,8 @@
         %td= video.title
         %td= video.flv
         %td= video.mp4
-        %td= video.dimensions
-        %td= video.video_bitrate
-        %td= video.audio_bitrate
+        %td
+          %a{ href: url('/videos/' + video.id.to_s + '/meta') } meta
         %td= video.status
         %td
           %button{ type: 'button', onclick: "delete_video(#{video.id})"  } Delete
