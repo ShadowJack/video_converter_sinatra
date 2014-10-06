@@ -1,0 +1,20 @@
+%h1 All videos:
+%table
+  %thead
+    %td Id
+    %td Title
+    %td flv
+    %td mp4
+    %td dimensions
+    %td video bitrate
+    %td audio bitrate
+  %tbody
+    - @videos.each do |video|
+      %tr
+        %td =video.id
+        %td =video.title
+        %td =video.flv
+        %td =video.mp4
+        %td =video.dimensions
+        %td =video.video_bitrate
+        %td =video.audio_bitrate
