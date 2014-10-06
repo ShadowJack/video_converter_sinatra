@@ -38,7 +38,7 @@ end
 
 delete '/videos/:id' do
   @video = Video.get(params[:id])
-  logger.info "Video: " + @video.inspect
+  logger.info 'Video: ' + @video.inspect
   if @video && @video.remove_from_disk && @video.destroy
     flash.next[:notice] = 'Your video was successfully deleted!'
   else

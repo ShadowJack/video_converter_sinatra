@@ -12,14 +12,14 @@ DataMapper.setup(:default, 'mysql://dbowner:password@localhost/video_sinatra')
 class Video
   include DataMapper::Resource
 
-  property :id,             Serial         # Primary autoincremental key
-  property :title,          String         # Video title
-  property :flv,            String         # Path to flv file
-  property :mp4,            String         # Path to mp4 file
-  property :dimensions,     String         # Info about dimensions of video
-  property :video_bitrate,  String         # Info about video bitrate
-  property :audio_bitrate,  String         # Info about audio bitrate
-  property :status,         String         # 'q' - queue, 'c' - convertion, 'f' - finished
+  property :id,             Serial   # Primary autoincremental key
+  property :title,          String   # Video title
+  property :flv,            String   # Path to flv file
+  property :mp4,            String   # Path to mp4 file
+  property :dimensions,     String   # Info about dimensions of video
+  property :video_bitrate,  String   # Info about video bitrate
+  property :audio_bitrate,  String   # Info about audio bitrate
+  property :status,         String   # 'q' queue, 'c' convertion, 'f' finished
 
   ##
   # Try to create new video from params and move it to uploads folder
@@ -37,19 +37,17 @@ class Video
                    status:        'q'
     end
   end
-  
+
   ##
   # Remove this video from disk
   # both flv and mp4 files
-  def remove_from_disk()
-    begin
-      File.delete @flv if @flv && (File.exist? @flv)
-      File.delete @mp4 if @mp4 && (File.exist? @mp4)
-      true
+  def remove_from_disk
+    File.delete @flv if @flv && (File.exist? @flv)
+    File.delete @mp4 if @mp4 && (File.exist? @mp4)
+    true
     rescue
-      p "Error while deleting files from disk!"
+      p 'Error while deleting files from disk!'
       false
-    end
   end
 
   private
