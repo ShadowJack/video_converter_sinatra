@@ -4,7 +4,6 @@ require './Models/video.rb'
 
 
 get '/videos' do
-  Video.create()
   @videos = Video.all
   haml :index
 end
@@ -14,7 +13,10 @@ get '/videos/new' do
 end
 
 post '/videos' do
-  
+  if Video.load( params )
+    redirect to('/videos')
+  else
+    haml :upload_error
 end
 
 get '/videos/:id/flv' do

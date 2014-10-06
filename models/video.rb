@@ -16,6 +16,7 @@ class Video
   property :dimensions,     String         # Info about dimensions of video
   property :video_bitrate,  String         # Info about video bitrate
   property :audio_bitrate,  String         # Info about audio bitrate
+  property :status,         String         # Status of video conversion: 'q' - in queue, 'c' - in convertion, 'f' - finished
 end
 
 # Perform basic sanity checks and initialize all relationships

@@ -1,0 +1,11 @@
+%h2 Upload new video
+%form{ action: '/videos', method: 'post', enctype: 'multipart/form-data' }
+  %fieldset
+    %ol
+      %li
+        %label{for: 'title'} Title:
+        %input{type: 'text', name: 'title'}
+      %li
+        %label{for: 'file'} File:
+        %input{type: 'file', :name => 'file'}
+    %input{:type => 'submit', :value => 'Upload'}

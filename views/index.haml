@@ -1,4 +1,4 @@
-%h1 All videos:
+%h2 All videos:
 %table
   %thead
     %td Id
@@ -11,10 +11,13 @@
   %tbody
     - @videos.each do |video|
       %tr
-        %td =video.id
-        %td =video.title
-        %td =video.flv
-        %td =video.mp4
-        %td =video.dimensions
-        %td =video.video_bitrate
-        %td =video.audio_bitrate
+        %td= video.id
+        %td= video.title
+        %td= video.flv
+        %td= video.mp4
+        %td= video.dimensions
+        %td= video.video_bitrate
+        %td= video.audio_bitrate
+        
+%p
+  %a{ href: url('/videos/new') } Upload new video
