@@ -37,6 +37,20 @@ class Video
                    status:        'q'
     end
   end
+  
+  ##
+  # Remove this video from disk
+  # both flv and mp4 files
+  def remove_from_disk()
+    begin
+      File.delete @flv if @flv && (File.exist? @flv)
+      File.delete @mp4 if @mp4 && (File.exist? @mp4)
+      true
+    rescue
+      p "Error while deleting files from disk!"
+      false
+    end
+  end
 
   private
 
