@@ -26,7 +26,6 @@ class Video
   # Hash params - request params
   def self.upload(params)
     video = create(title: params['title'])
-    # move temp file to uploads directory
     File.open('uploads/' + video.id.to_s + '.flv', 'w') do |f|
       f.write(params['file'][:tempfile].read)
       meta = get_meta f

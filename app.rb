@@ -25,11 +25,11 @@ post '/videos/?' do
 end
 
 get '/videos/:id/flv/?' do
-  haml :index
+  download :flv
 end
 
 get '/videos/:id/mp4/?' do
-  haml :index
+  download :mp4
 end
 
 get '/videos/:id/meta/?' do
