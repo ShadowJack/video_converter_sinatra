@@ -13,8 +13,16 @@
       %tr
         %td= video.id
         %td= video.title
-        %td= video.flv
-        %td= video.mp4
+        %td
+          -if video.flv && File.exist?(video.flv)
+            %a{ href: url('/videos/' + video.id.to_s + '/flv')} flv
+          -else
+            flv
+        %td
+          -if video.mp4 && File.exist?(video.mp4)
+            %a{ href: url('/videos/' + video.id.to_s + '/mp4')} mp4
+          -else
+            mp4
         %td
           %a{ href: url('/videos/' + video.id.to_s + '/meta') } meta
         %td= video.status

@@ -1,4 +1,5 @@
 require 'sinatra'
+require 'sinatra/flash'
 require './helpers.rb'
 require './Models/video.rb'
 
@@ -14,7 +15,8 @@ get '/videos/new/?' do
 end
 
 post '/videos/?' do
-  if !params['title'] || !params['file'][:tempfile]
+  logger.info params
+  if !params['title'] || !(params['file'] && params['file'][:tempfile])
     flash.next[:error] = 'Both title and file fields are required!'
     redirect to '/videos/new'
   elsif Video.upload(params)

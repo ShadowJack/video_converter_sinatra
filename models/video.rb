@@ -1,5 +1,4 @@
 require 'data_mapper'
-require 'streamio-ffmpeg'
 require './workers/convertion_worker.rb'
 
 # If you want the logs displayed you have to do this before the call to setup
@@ -27,10 +26,10 @@ class Video
   # Hash params - request params
   def self.upload(params)
     video = create(title: params['title'])
-    File.open('uploads/' + video.id.to_s + '.flv', 'w') do |f|
-      f.write(params['file'][:tempfile].read)
-      meta = get_meta f
-      video.update flv:           f.path,
+    File.open('uploads/' + video.id.to_s + '.flv', 'w') do |file|
+      file.write(params['file'][:tempfile].read)
+      meta = get_meta file
+      video.update flv:           file.path,
                    dimensions:    meta[:dimensions],
                    video_bitrate: meta[:v_bitrate],
                    audio_bitrate: meta[:a_bitrate],
@@ -55,11 +54,11 @@ class Video
 
   def self.get_meta(file)
     video = FFMPEG::Movie.new(file.path)
-    result = {}
-    result[:dimensions] = video.resolution
-    result[:v_bitrate] = video.video_bitrate
-    result[:a_bitrate] = video.audio_bitrate
-    result
+    {
+      dimensions: video.resolution,
+      v_bitrate: video.video_bitrate,
+      a_bitrate: video.audio_bitrate
+    }
   end
 end
 
@@ -68,25 +67,3 @@ DataMapper.finalize
 
 # Create and update table automatically
 Video.auto_upgrade!
-
-
-class ConvertionWorker
-  include Sidekiq::Worker
-  sidekiq_options retry: 3  # worker tries to do this job 3 times on failure
-  
-  #Sidekiq::Queue['default'].limit = 1
-  
-  # Sidekiq::Worker assumes that our 
-  # Worker implementation has this method
-  def perform(video_id)
-    video = Video.get(video_id)
-    flv_video = FFMPEG::Movie.new(video.flv)
-    options = { 
-            resolution: flv_video.resolution,
-            video_bitrate: flv_video.video_bitrate,
-            audio_bitrate: flv_video.audio_bitrate
-    }
-    mp4_video = flv_video.transcode('uploads/' + video.id.to_s + '.mp4', options)
-    video.update(mp4: mp4_video.path)
-  end
-end
