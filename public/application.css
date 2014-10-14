@@ -5,3 +5,11 @@ table {
 tr {
   border: 1px solid #C3E6DC;
 }
+
+.error {
+  border: 1px solid #800040;
+}
+
+.notice {
+  border: 1px solid #004080;
+}
