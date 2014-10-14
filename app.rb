@@ -5,18 +5,21 @@ require './Models/video.rb'
 
 enable :sessions
 
+# List of all videos 
 get '/videos/?' do
   @videos = Video.all
   haml :index
 end
 
+# Form to add a new video
 get '/videos/new/?' do
   haml :new
 end
 
+# Upload new video to uploads/ folder
+# and send to conversion worker
 post '/videos/?' do
-  logger.info params
-  if !params['title'] || !(params['file'] && params['file'][:tempfile])
+  if !params['title'] || !params['file'] || !params['file'][:tempfile]
     flash.next[:error] = 'Both title and file fields are required!'
     redirect to '/videos/new'
   elsif Video.upload(params)
@@ -26,14 +29,18 @@ post '/videos/?' do
   end
 end
 
+# Download flv file
 get '/videos/:id/flv/?' do
   download :flv
 end
 
+# Download mp4 file
 get '/videos/:id/mp4/?' do
   download :mp4
 end
 
+# Show meta information:
+# resolution, video bitrate, audio bitrate
 get '/videos/:id/meta/?' do
   @video = Video.get params[:id]
   if @video
@@ -44,6 +51,7 @@ get '/videos/:id/meta/?' do
   end
 end
 
+# Removes video from db and from disk
 delete '/videos/:id/?' do
   @video = Video.get params[:id]
   logger.info 'Video: ' + @video.inspect
